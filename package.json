@@ -1,0 +1,22 @@
+{
+  "name": "weixin-sdk",
+  "version": "1.0.7",
+  "description": "some API related to weixin in nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "linguang",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "crypto": "^0.0.3",
+    "debug": "^2.6.1",
+    "ioredis": "^2.5.0",
+    "jssha": "^1.5.0",
+    "memory-cache": "^0.1.6",
+    "request": "^2.80.0",
+    "request-promise": "^4.1.1",
+    "wechat-oauth": "^1.2.1"
+  }
+}
