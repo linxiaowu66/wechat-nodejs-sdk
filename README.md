@@ -3,7 +3,7 @@
 
 ## Usage
 
-1. 安装： yarn add weixin-sdk
+1. 安装： yarn add wechat-nodejs-sdk
 2. 使用：
 ```
 import WeixinSdk from 'weixin-sdk'

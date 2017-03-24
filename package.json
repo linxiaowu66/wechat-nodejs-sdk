@@ -1,5 +1,5 @@
 {
-  "name": "weixin-sdk",
+  "name": "wechat-nodejs-sdk",
   "version": "1.0.7",
   "description": "some API related to weixin in nodejs",
   "main": "index.js",
@@ -18,5 +18,10 @@
     "request": "^2.80.0",
     "request-promise": "^4.1.1",
     "wechat-oauth": "^1.2.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/linxiaowu66/wechat-nodejs-sdk.git"
+  },
+  "homepage": "https://github.com/linxiaowu66/wechat-nodejs-sdk/blob/master/README.md"
 }
