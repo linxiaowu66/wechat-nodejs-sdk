@@ -1,5 +1,5 @@
 ## Packages用途
-提供给Nodejs端开发微信公众号相关的SDK
+提供给Nodejs端开发微信公众号相关的SDK, 目前只支持使用redis作为存储介质。
 
 ## Usage
 
