@@ -16,16 +16,16 @@ module.exports = class WeixinSDK {
       granType: 'client_credential',
       accessTokenUrl: 'https://api.weixin.qq.com/cgi-bin/token',
       ticketUrl: 'https://api.weixin.qq.com/cgi-bin/ticket/getticket',
-      redisTokenKey: '', // Redis的Key值
-      redisName: '', // Redis的名称
       appToken: '1111111',
-      redisHost: [], // Redis的主机
-      redisPwd: '', // Redis密码
       cacheKey: '' // Ticket缓存的名称
     }
     this.config = Object.assign(defaultOptions, options)
+
     if (options.logger) {
-      Log.logger = logger
+      Log.logger = options.logger
+    }
+    if (!this.config.client) {
+      Log.logger.error('token storage client is empty, this should be failure after saving token ')
     }
   }
   /**
@@ -35,25 +35,19 @@ module.exports = class WeixinSDK {
    * @memberOf WeixinSDK
    */
   init() {
-    Log.logger.info('weixin sdk initialization.......config: ', this.config)
-    // 初始化Redis客户端缓存微信Token
-    this.redisClient = new Redis({
-      sentinels: this.config.redisHost,
-      name: this.config.redisName,
-      password: this.config.redisPwd
-    })
     this.weixinClient = new OAuth(this.config.appId, this.config.appSecret)
     // 延长微信服务器认证超长时间
     this.weixinClient.setOpts({ timeout: 10000 });
-    this.redisClient.get(this.config.redisTokenKey).then((token) => {
+    Log.logger.info('weixin sdk initialization.......config: ', this.config.tokenKey)
+    this.config.client.get(this.config.tokenKey).then((token) => {
       if (!token) {
         Token.generateTokenAndSave({
-          redisClient: this.redisClient,
+          client: this.config.client,
           accessTokenUrl: this.config.accessTokenUrl,
           granType: this.config.granType,
           appId: this.config.appId,
           appSecret: this.config.appSecret,
-          redisTokenKey: this.config.redisTokenKey
+          tokenKey: this.config.tokenKey
         })
         .then(token => {
           Log.logger.info('in weixin-sdk init state, token is: ', token)
@@ -76,23 +70,23 @@ module.exports = class WeixinSDK {
       // 说明请求来自Ticket的更新，这个时候我们就直接同步更新Token，不再从Redis读取
       if (options === 'ticket') {
         return resolve(Token.generateTokenAndSave({
-            redisClient: this.redisClient,
+            client: this.config.client,
             accessTokenUrl: this.config.accessTokenUrl,
             granType: this.config.granType,
             appId: this.config.appId,
             appSecret: this.config.appSecret,
-            redisTokenKey: this.config.redisTokenKey
+            tokenKey: this.config.tokenKey
         }))
       }
-      this.redisClient.get(this.config.redisTokenKey).then((token) => {
+      this.config.client.get(this.config.tokenKey).then((token) => {
         if (!token) {
           resolve(Token.generateTokenAndSave({
-            redisClient: this.redisClient,
+            client: this.config.client,
             accessTokenUrl: this.config.accessTokenUrl,
             granType: this.config.granType,
             appId: this.config.appId,
             appSecret: this.config.appSecret,
-            redisTokenKey: this.config.redisTokenKey
+            tokenKey: this.config.tokenKey
           }))
         } else {
           resolve(token)

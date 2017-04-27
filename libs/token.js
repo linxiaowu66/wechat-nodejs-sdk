@@ -19,8 +19,8 @@ module.exports = {
         if (parseRes.errcode) {
           return reject(parseRes.errmsg)
         }
-        // 微信Token失效时间是2个小时，在失效前5分钟提前失效掉Redis缓存
-        args.redisClient.set(args.redisTokenKey, parseRes.access_token, 'EX', 115 * 60)
+        // 微信Token失效时间是2个小时，在失效前5分钟提前失效掉缓存
+        args.client.set(args.tokenKey, parseRes.access_token, 'EX', 115 * 60)
         Log.logger.info('request token from weixin server = ', parseRes.access_token)
         return resolve(parseRes.access_token)
       }).catch((err) => {

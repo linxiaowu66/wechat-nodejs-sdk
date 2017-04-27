@@ -7,28 +7,30 @@
 2. 使用：
 ```
 import WeixinSdk from 'weixin-sdk'
-import config from '../../../config'
+import { logger } from '../helpers/logger'
+import redisClient from './redis-client'
+
+module.exports.weixinSdk = new WeixinSdk({ ...config.weixin, client: redisClient, logger: logger })
 
 module.exports.weixinSdk = new WeixinSdk(config.weixin)
 ```
 
 **Note**
 
-    config.weixin中可能需要配置的参数
+config.weixin中可能需要配置的参数
+
+
 | 参数           | 说明                                                                          | 默认值                                                                                                                   |
 |----------------|-------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
 | noncestr       | 随机数，用于验证消息的确来自微信服务器(可以参考https://mp.weixin.qq.com/wiki) | Wm3WZYTPz0wzccnW                                                                                                         |
-| appId          | 微信为每个公众号生成的唯一的随机数                                            |                                                                                                        |
-| appSecret      | 和appId组合使用，也是基于每个公众号                                           |                                                                                          |
+| appId          | 微信为每个公众号生成的唯一的随机数                                            | wx7f70a1cadda24881                                                                                                       |
+| appSecret      | 和appId组合使用，也是基于每个公众号                                           | 5da26c0c6d1b9cf5cef5baf76ee784a8                                                                                         |
 | granType       | 向微信服务器请求的类型，目前只用于获取Token，所以使用默认值                   | client_credential                                                                                                        |
 | accessTokenUrl | 向微信服务器请求Token的Url                                                    | https://api.weixin.qq.com/cgi-bin/token                                                                                  |
 | ticketUrl      | 向微信请求Tiket的Url                                                          | https://api.weixin.qq.com/cgi-bin/ticket/getticket                                                                       |
-| redisTokenKey  | 缓存到Redis的微信Token名称，根据不同环境下修改成自己的名字                    |                                                                                                          |
-| redisName      | Redis的名称，根据不同环境下修改成自己的名字                                   |                                                                                                              |
+| tokenKey  | 缓存到Storage的微信Token名称，根据不同环境下修改成自己的名字                    | BFF:WEIXIN:TOKEN                                                                                                         |
 | appToken       | 用于验证消息的确来自微信服务器(可以参考https://mp.weixin.qq.com/wiki)         | 1111111                                                                                                                  |
-| redisHost      | Redis的地址                                                                   | [] |
-| redisPwd       | Redis密码                                                                     | 
-| cacheKey       | 缓存到Memory Cache的微信Ticket字段名称                                         | 
+| cacheKey       | 缓存到Memory Cache的微信Ticket字段名称                                         | BFF:RIDER:WEIXIN:TICKET
 
 ## API
 
